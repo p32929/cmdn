@@ -1,0 +1,1 @@
+SOUND_DIR=alarm.mp3
