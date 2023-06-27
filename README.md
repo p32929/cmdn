@@ -6,6 +6,12 @@ A simple CLI kinda thingie that alerts when a command finishes
 any_cli_command any_cli_command_argument & cmdn
 ```
 
+example:
+
+```
+yarn add fjsondb & cmdn
+```
+
 You just need to add ` & cmdn` at the and any command and it will notify when its done.
 
 # Installation
