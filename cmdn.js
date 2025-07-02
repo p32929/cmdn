@@ -292,14 +292,14 @@ async function installGlobally() {
         });
         
         console.log('✅ cmdn installed globally!');
-        console.log('💡 Now you can run: cmdn "your command"');
-        console.log('🚀 Try it: cmdn "echo hello world"');
+        console.log('💡 Now you can run: cmdn your command');
+        console.log('🚀 Try it: cmdn echo hello world');
         
     } catch (error) {
         console.error(`Failed to install globally: ${error.message}`);
         console.log('\n📋 Manual installation:');
         console.log('Run: npm install -g .');
-        console.log('Then use: cmdn "your command"');
+        console.log('Then use: cmdn your command');
     }
 }
 
@@ -337,7 +337,7 @@ async function runConfiguration() {
         {
             type: 'confirm',
             name: 'installGlobally',
-            message: 'Install cmdn globally so you can use "cmdn \\"command\\"" from anywhere?',
+            message: 'Install cmdn globally so you can use "cmdn command" from anywhere?',
             default: true
         }
     ];
@@ -388,15 +388,18 @@ async function main() {
 CMDN - Universal CLI Notification Tool
 
 Usage:
-  cmdn "command"          Run command and notify when done
+  cmdn command            Run command and notify when done
   cmdn --configure        Configure notification settings
   cmdn --help            Show this help
 
 Examples:
-  cmdn "ls"               Run ls and notify when done
-  cmdn "npm install"      Run npm install and notify when done
-  cmdn "make build"       Run make build and notify when done
-  cmdn "git push"         Run git push and notify when done
+  cmdn ls                 Run ls and notify when done
+  cmdn npm install        Run npm install and notify when done
+  cmdn make build         Run make build and notify when done
+  cmdn git push           Run git push and notify when done
+  cmdn echo "hello world" Handles quotes naturally - no escaping needed!
+  cmdn git commit -m "fix: nested quotes"
+  cmdn curl -H "Content-Type: application/json" -d '{"key": "value"}'
 
 Template Variables:
   In post-commands, you can use:
@@ -404,11 +407,11 @@ Template Variables:
   [[output]]  - The output of the command
 `);
     } else if (args.length === 0) {
-        console.log('❌ No command specified. Use: cmdn "your command"');
+        console.log('❌ No command specified. Use: cmdn your command');
         console.log('   Or use: cmdn --help for more info');
         process.exit(1);
     } else {
-        // Run the specified command
+        // Raw mode by default - just join all arguments
         const commandToRun = args.join(' ');
         
         console.log(`🚀 Running: ${commandToRun}`);

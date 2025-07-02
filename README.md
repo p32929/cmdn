@@ -1,5 +1,5 @@
 # CMDN
-A simple CLI notification tool - just run any command with `cmdn "command"` and get notified when it's done!
+A simple CLI notification tool - just run any command with `cmdn command` and get notified when it's done!
 
 ## Setup
 
@@ -24,16 +24,19 @@ The setup will ask you 3 questions:
 ## Usage
 
 ```bash
-cmdn "your command here"
+cmdn your command here
 ```
 
 Examples:
 ```bash
-cmdn "ls"
-cmdn "npm install"
-cmdn "make build"
-cmdn "git push"
-cmdn "docker build -t myapp ."
+cmdn ls
+cmdn npm install
+cmdn make build
+cmdn git push
+cmdn docker build -t myapp .
+cmdn echo "hello world"
+cmdn git commit -m "fix: nested quotes work perfectly!"
+cmdn curl -H "Content-Type: application/json" -d '{"key": "value"}'
 ```
 
 ## Template Variables
