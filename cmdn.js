@@ -73,19 +73,49 @@ function findSoundFile() {
     throw new Error('alarm.mp3 not found. Make sure it\'s in the same directory as the executable.');
 }
 
-// Execute a command and capture its output
+// Execute a command and capture its output with real-time streaming
 function executeCommand(command) {
     return new Promise((resolve, reject) => {
-        exec(command, { maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
-            const output = stdout + stderr;
-            const exitCode = error ? error.code : 0;
+        // Use shell: true for automatic cross-platform shell handling
+        const child = spawn(command, {
+            stdio: ['inherit', 'pipe', 'pipe'],
+            shell: true
+        });
+        
+        let stdoutData = '';
+        let stderrData = '';
+        
+        // Stream stdout to console and capture for later
+        child.stdout.on('data', (data) => {
+            const text = data.toString();
+            process.stdout.write(text);
+            stdoutData += text;
+        });
+        
+        // Stream stderr to console and capture for later
+        child.stderr.on('data', (data) => {
+            const text = data.toString();
+            process.stderr.write(text);
+            stderrData += text;
+        });
+        
+        child.on('close', (exitCode) => {
+            const output = (stdoutData + stderrData).trim();
             
-            // Always resolve (don't reject on command failure)
             resolve({
                 command,
-                output: output.trim(),
-                exitCode,
-                success: !error
+                output,
+                exitCode: exitCode || 0,
+                success: exitCode === 0
+            });
+        });
+        
+        child.on('error', (error) => {
+            resolve({
+                command,
+                output: error.message,
+                exitCode: 1,
+                success: false
             });
         });
     });
@@ -384,13 +414,8 @@ Template Variables:
         console.log(`🚀 Running: ${commandToRun}`);
         console.log('━'.repeat(50));
         
-        // Execute the command and capture output
+        // Execute the command and capture output (with real-time streaming)
         const result = await executeCommand(commandToRun);
-        
-        // Display the output
-        if (result.output) {
-            console.log(result.output);
-        }
         
         console.log('━'.repeat(50));
         console.log(`✅ Command finished with exit code ${result.exitCode}`);
