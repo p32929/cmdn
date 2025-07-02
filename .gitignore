@@ -1,1 +1,9 @@
+# Configuration file (user-specific)
+cmdn-config.json
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
 *.exe
